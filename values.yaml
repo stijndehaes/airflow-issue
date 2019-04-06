@@ -1,5 +1,11 @@
 
 airflow:
+  extraConfigmapMounts:
+  - name: airflow-config
+    mountPath: /usr/local/airflow/airflow.cfg
+    configMap: airflow-config
+    readOnly: true
+    subPath: airflow.cfg
   variables: '{ "environment": "dev" }'
   fernetKey: "FFZ0QjXwx7Cam0iAKK4C3z19ip3henvOx9gp8j2IB60="
   connections:
@@ -14,13 +20,17 @@ airflow:
     AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "true"
     AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: airflow
     AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: 1.10.2
-    AIRFLOW__KUBERNETES__NAMESPACE: airflow
+    AIRFLOW__KUBERNETES__NAMESPACE: default
+    AIRFLOW_HOME: /usr/local/airflow/
+    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
     AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "false"
   image:
     repository: airflow
     tag: 1.10.2
 workers:
   enabled: false
+web:
+  initialStartupDelay: "10"
 serviceAccount:
   create: true
 redis:

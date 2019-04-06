@@ -50,7 +50,7 @@ dag.doc_md = __doc__
 t2 = BashOperator(
     task_id='sleep',
     depends_on_past=False,
-    bash_command=f'export ENVIRONMENT={environment}sleep 5',
+    bash_command=f'ENVIRONMENT={environment} sleep 5',
     dag=dag)
 
 templated_command = """
